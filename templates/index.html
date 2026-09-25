@@ -1,13 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página inicial</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Página Inicial</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
 </head>
 
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <a class="nav-link" href="{{ url_for('equipe') }}">Equipe</a>
+    </nav>
+</header>
+
 <body>
-    
+    <div class="container">
+        <div class="col align-self-center">
+        <div class="card" style="width: 35rem;">
+        <div class="container text-center">
+            <h1 class="card-title">Calculadora de pegada de carbono</h1>
+            <p>Preencha o formulário com as informações para descobrir sua emissão mensal e em qual faixa de impacto
+                está
+            </p>
+        </div>
+
+        <div class="container">
+            <form action="{{ url_for('pagina_inicial') }}" method="post" class="d-grid gap-4 column-gap-3">
+                <div>
+                    <label for="distancia" class="form-label">
+                        Distância percorrida por dia (Ida e volta)<span class="text-danger">*</span>
+                    </label>
+                    <input type="number" min="1" class="form-control" id="distancia" name="distancia"
+                        placeholder="Digite em Km" required>
+                </div>
+
+                <div>
+                    <label for="dias" class="form-label">
+                        Dias de deslocamento por semana<span class="text-danger">*</span>
+                    </label>
+                    <input type="number" min="1" max="7" class="form-control" id="dias" name="dias"
+                        placeholder="Digite os dias" required>
+
+                </div>
+
+                <div>
+                    <label for="transporte" class="form-label">
+                        Meio de transporte<span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" name="transporte" id="transporte" required>
+                        <option value="0">Bicicleta ou a pé</option>
+                        <option value="0.05">Carro elétrico</option>
+                        <option value="0.07">Ônibus</option>
+                        <option value="0.1">Moto</option>
+                        <option value="0.2">Carro a gasolina</option>
+                    </select>
+                </div>
+
+                <div class="d-flex gap-3">
+                    <button type="submit" class="btn btn-primary">
+                        Verificar
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary">
+                        Limpar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        {% if resultado %}
+        <div class="cotainer">
+            <p>
+                Quilômetros por mês: {{km_mes}} km
+            </p>
+
+            <p>
+                Emissão mensal: {{emissao}} kg de CO₂
+            </p>
+
+            <p>
+                Faixa de Impacto:
+                {% if emissao <= 20 %} 🟢 Baixo impacto {% elif emissao> 20 and emissao <= 60 %} 🟡 Impacto moderado {%
+                        elif emissao> 60 and emissao <= 120 %} 🟠 Alto impacto {% else %} 🔴 Impacto crítico {% endif %}
+                            </p>
+        </div>
+        {% endif %}
+    </div>
+    </div>
+    </div>
 </body>
 
 </html>
